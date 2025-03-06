@@ -19,6 +19,9 @@ target = "Transported"
 data.set_index("PassengerId", inplace=True)
 data.drop("Name", axis=1, inplace=True)
 x_test.drop("Name", axis=1, inplace=True)
+spending_cols = ["RoomService", "FoodCourt", "ShoppingMall", "Spa", "VRDeck"]
+data["TotalSpending"] = data[spending_cols].sum(axis=1)
+x_test["TotalSpending"] = x_test[spending_cols].sum(axis=1)
 
 # categorical feature
 # cols = ["HomePlanet","CryoSleep","Cabin","Destination","VIP"]
@@ -37,7 +40,7 @@ x = data.drop(target, axis=1)
 y = data[target]
 x_train, x_valid, y_train, y_valid = train_test_split(x, y, test_size=0.2, random_state=42)
 
-num_features = ["Age","RoomService","FoodCourt","ShoppingMall","Spa","VRDeck"]
+num_features = ["Age","TotalSpending"]
 nom_features = ["HomePlanet","CryoSleep","Cabin","Destination","VIP"]
 
 num_transformer = Pipeline(steps=[
