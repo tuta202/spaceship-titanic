@@ -16,13 +16,6 @@ x_test = pd.read_csv("data/test.csv", index_col="PassengerId")
 
 target = "Transported"
 
-data.set_index("PassengerId", inplace=True)
-data.drop("Name", axis=1, inplace=True)
-x_test.drop("Name", axis=1, inplace=True)
-spending_cols = ["RoomService", "FoodCourt", "ShoppingMall", "Spa", "VRDeck"]
-data["TotalSpending"] = data[spending_cols].sum(axis=1)
-x_test["TotalSpending"] = x_test[spending_cols].sum(axis=1)
-
 # categorical feature
 # cols = ["HomePlanet","CryoSleep","Cabin","Destination","VIP"]
 # n_rows = 2
@@ -36,12 +29,23 @@ x_test["TotalSpending"] = x_test[spending_cols].sum(axis=1)
 #       sns.countplot(data=data, x=cols[i], hue=target, ax=ax_i)
 # plt.show()
 
+data.set_index("PassengerId", inplace=True)
+data.drop("Name", axis=1, inplace=True)
+x_test.drop("Name", axis=1, inplace=True)
+
+spending_cols = ["RoomService", "FoodCourt", "ShoppingMall", "Spa", "VRDeck"]
+data["TotalSpending"] = data[spending_cols].sum(axis=1)
+x_test["TotalSpending"] = x_test[spending_cols].sum(axis=1)
+
+data[['Deck', 'CabinNum', 'Side']] = data['Cabin'].str.split('/', expand=True)
+x_test[['Deck', 'CabinNum', 'Side']] = x_test['Cabin'].str.split('/', expand=True)
+
 x = data.drop(target, axis=1)
 y = data[target]
 x_train, x_valid, y_train, y_valid = train_test_split(x, y, test_size=0.2, random_state=42)
 
-num_features = ["Age","TotalSpending"]
-nom_features = ["HomePlanet","CryoSleep","Cabin","Destination","VIP"]
+num_features = ["Age","TotalSpending", "CabinNum"]
+nom_features = ["HomePlanet","CryoSleep","Cabin","Destination","VIP", "Deck", "Side"]
 
 num_transformer = Pipeline(steps=[
   ("imputer", SimpleImputer(missing_values=np.nan, strategy="median")),
