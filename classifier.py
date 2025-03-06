@@ -67,7 +67,7 @@ cls = Pipeline(steps=[
   ("model", RandomForestClassifier()),
 ])
 params = {
-  "model__n_estimators": [100, 200, 300],
+  "model__n_estimators": [100, 200, 300, 500],
   "model__criterion": ["gini", "entropy", "log_loss"],
   "model__max_depth": [None, 2],
 }
