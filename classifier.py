@@ -41,7 +41,7 @@ data[['Deck', 'CabinNum', 'Side']] = data['Cabin'].str.split('/', expand=True)
 x_test[['Deck', 'CabinNum', 'Side']] = x_test['Cabin'].str.split('/', expand=True)
 
 x = data.drop(target, axis=1)
-y = data[target]
+y = data[target].astype(int)
 x_train, x_valid, y_train, y_valid = train_test_split(x, y, test_size=0.2, random_state=42)
 
 num_features = ["Age","TotalSpending", "CabinNum"]
