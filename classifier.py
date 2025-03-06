@@ -67,12 +67,14 @@ cls = Pipeline(steps=[
   ("model", RandomForestClassifier()),
 ])
 params = {
-  "model__n_estimators": [100, 200, 300, 500],
+  "model__n_estimators": [200, 300, 500],
   "model__criterion": ["gini", "entropy", "log_loss"],
   "model__max_depth": [None, 2],
+  "model__min_samples_split": [2, 5, 10],
+  "model__min_samples_leaf": [1, 2, 5],
 }
 
-grid_search = GridSearchCV(estimator=cls, param_grid=params, cv=4, scoring="accuracy", verbose=2, n_jobs=-1)
+grid_search = GridSearchCV(estimator=cls, param_grid=params, cv=4, scoring="accuracy", verbose=1, n_jobs=-1)
 grid_search.fit(x_train, y_train)
 y_valid_predicted = grid_search.predict(x_valid)
 
